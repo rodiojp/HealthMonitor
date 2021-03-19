@@ -85,6 +85,11 @@ namespace HealthMonitor.ConsoleApp
             }
 
         }
+
+        /// <summary>
+        /// Creates the Ninject Kernel and binds any short for name to an object
+        /// </summary>
+        /// <returns>An implementation of <see cref="IKernel"/> object</returns>
         private static StandardKernel CreateAndBindKernel()
         {
             StandardKernel kernel = new StandardKernel(new ServiceModule());
