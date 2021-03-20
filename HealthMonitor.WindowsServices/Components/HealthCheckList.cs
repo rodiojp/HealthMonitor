@@ -167,7 +167,7 @@ namespace HealthMonitor.WindowsServices.Components
         private static void StartHealthCheckTimer(string name, HealthCheckTimer timer)
         {
             timer.Start();
-            Log.DebugFormat($"started timer for {name} with {timer.Interval} (next run:{timer.NextRunTime} ");
+            Log.DebugFormat($"started timer for {name} with {timer.Interval} (next run:{timer.NextRunTime}) ");
         }
 
         /// <summary>

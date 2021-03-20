@@ -9,6 +9,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 using HealthMonitor.Application;
+using HealthMonitor.Domain;
 using HealthMonitor.Domain.Configuration;
 using HealthMonitor.Domain.Configuration.Interfaces;
 using HealthMonitor.Domain.Results;
@@ -26,16 +27,18 @@ namespace HealthMonitor.WindowsServices
     public partial class HealthMonitorService : ServiceBase
     {
         //Log4Net logger
-        private static readonly ILog Log = LogManager.GetLogger(typeof(HealthMonitorService));
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         // from config: appender-ref ref="RollingFile"/>
         private static readonly string[] RollingFileAppenderNames = new string[] { "RollingFile" };
 
         private readonly IList<IHealthCheck> healthChecks;
         private HealthCheckList healthCheckList;
         private IKernel kernel;
+        private static readonly HealthChecksSection HealthChecksSection = HealthChecksSection.GetConfig();
 
         public HealthMonitorService()
         {
+            Log.Debug("Initialize HealthMonitorService");
             InitializeComponent();
             healthChecks = new List<IHealthCheck>();
         }
@@ -44,6 +47,10 @@ namespace HealthMonitor.WindowsServices
         {
             InitializeLogging();
             Log.Debug("OnStart");
+            if (HealthChecksSection == null || HealthChecksSection.HealthChecks == null || HealthChecksSection.HealthChecks.Count == 0)
+            {
+                Log.Error(SystemConstants.MISSING_HEALTH_CHECK_SECTION);
+            }
 
             try
             {
@@ -192,9 +199,19 @@ namespace HealthMonitor.WindowsServices
         private static StandardKernel CreateAndBindKernel()
         {
             StandardKernel kernel = new StandardKernel(new ServiceModule());
+            foreach (object key in HealthChecksSection.HealthChecks)
+            {
+                var healthCheck = key as HealthCheck;
+                switch (healthCheck.Type)
+                {
+                    case "StopStartWindowsServices":
+                        kernel.Bind<ApplicationHealthCheck>().To<StopStartWindowsServices>().Named(healthCheck.Name);
+                        Log.DebugFormat($"Added the Health Check: \"{healthCheck.Name}\" \"{healthCheck.Type}\"");
+                        break;
+                }
+            }
 
             // any implementation where you don't want to use the full assembly can go here
-            kernel.Bind<ApplicationHealthCheck>().To<StopStartWindowsServices>().Named("stop-start-windows-services");
             return kernel;
         }
     }

@@ -13,6 +13,9 @@ namespace HealthMonitor.Domain.Configuration
         [ConfigurationProperty("Name", IsRequired = true, IsKey = true)]
         public string Name => this["Name"] as string;
 
+        [ConfigurationProperty("Type", IsRequired = true)]
+        public string Type => this["Type"] as string;
+
         [ConfigurationProperty("AlertType", IsRequired = true)]
         public string AlertType => this["AlertType"] as string;
 

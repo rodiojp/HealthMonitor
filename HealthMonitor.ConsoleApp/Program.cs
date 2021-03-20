@@ -20,25 +20,27 @@ namespace HealthMonitor.ConsoleApp
     class Program
     {
         //Log4Net logger
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Program));
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         // from config: appender-ref ref="RollingFile"/>
-        private static readonly string[] RollingFileAppenderNames = new string[] { "RollingFile" }; 
+        private static readonly string[] RollingFileAppenderNames = new string[] { "RollingFile" };
+        private static readonly HealthChecksSection HealthChecksSection = HealthChecksSection.GetConfig();
+
         static void Main(string[] args)
         {
-            Log.Debug("Console Application");
-
+            Log.Debug("Start Application");
+            if (HealthChecksSection == null || HealthChecksSection.HealthChecks == null || HealthChecksSection.HealthChecks.Count == 0)
+            {
+                Log.Error(SystemConstants.MISSING_HEALTH_CHECK_SECTION);
+                return;
+            }
             if (args.Length == 0)
             {
-                HealthChecksSection healthChecksSection = HealthChecksSection.GetConfig();
-                if (healthChecksSection == null || healthChecksSection.HealthChecks == null || healthChecksSection.HealthChecks.Count == 0)
-                    Console.WriteLine("HealthChecksSection is not defined");
-                else
+
+                Console.WriteLine("Enter one of HealthChecksSection Names:");
+                foreach (object key in HealthChecksSection.HealthChecks)
                 {
-                    Console.WriteLine("Enter one of HealthChecksSection parameter names:");
-                    foreach (object key in healthChecksSection.HealthChecks)
-                    {
-                        Console.WriteLine((key as HealthCheck).Name);
-                    }
+                    var healthCheck = key as HealthCheck;
+                    Console.WriteLine($"\"{healthCheck.Name}\"");
                 }
             }
             else if (args.Length > 1)
@@ -49,8 +51,8 @@ namespace HealthMonitor.ConsoleApp
             {
                 string healthCheckName = args[0];
 
-                InitializeLogging(healthCheckName);
-                Log.DebugFormat($"arguments: {args[0]}");
+                InitializeLogging();
+                Log.DebugFormat($"Run The Health Check: \"{args[0]}\"");
 
                 try
                 {
@@ -93,19 +95,28 @@ namespace HealthMonitor.ConsoleApp
         private static StandardKernel CreateAndBindKernel()
         {
             StandardKernel kernel = new StandardKernel(new ServiceModule());
+            foreach (object key in HealthChecksSection.HealthChecks)
+            {
+                var healthCheck = key as HealthCheck;
+                switch (healthCheck.Type)
+                {
+                   case "StopStartWindowsServices":
+                        kernel.Bind<ApplicationHealthCheck>().To<StopStartWindowsServices>().Named(healthCheck.Name);
+                        Log.DebugFormat($"Added the Health Check: \"{healthCheck.Name}\" \"{healthCheck.Type}\"");
+                        break;
+                }
+            }
 
             // any implementation where you don't want to use the full assembly can go here
-            kernel.Bind<ApplicationHealthCheck>().To<StopStartWindowsServices>().Named("stop-start-windows-services");
             return kernel;
         }
 
-        private static void InitializeLogging(string healthCheckName)
+        private static void InitializeLogging()
         {
             //Read the configuration
-            XmlConfigurator.Configure();
+            //XmlConfigurator.Configure();
             Hierarchy hierarchy = (Hierarchy)LogManager.GetRepository();
             CleanupLogs(hierarchy);
-            Log.DebugFormat($"string health check: {healthCheckName}");
         }
 
         /// <summary>
