@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using HealthMonitor.Application;
+using HealthMonitor.Application.DoHealthChecks;
 using HealthMonitor.Domain;
 using HealthMonitor.Domain.Configuration;
 using HealthMonitor.Domain.Configuration.Interfaces;

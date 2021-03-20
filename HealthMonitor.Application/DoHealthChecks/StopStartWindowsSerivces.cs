@@ -8,7 +8,7 @@ using HealthMonitor.Domain;
 using HealthMonitor.Domain.Extensions;
 using HealthMonitor.Domain.Results;
 
-namespace HealthMonitor.Application
+namespace HealthMonitor.Application.DoHealthChecks
 {
     public class StopStartWindowsServices : ApplicationHealthCheck
     {
@@ -25,7 +25,7 @@ namespace HealthMonitor.Application
             try
             {
                 BoundsLimit boundsLimit = healthCheckParameters.FirstOrDefault(x => x.Name.ToLower().Equals(ServiceTimeoutMillisecondsParameter.ToLower()));
-                if (boundsLimit!=null)
+                if (boundsLimit != null)
                 {
                     int serviceTimeoutMilliseconds = int.Parse(boundsLimit.Value);
                     ServiceTimeout = TimeSpan.FromMilliseconds(serviceTimeoutMilliseconds);

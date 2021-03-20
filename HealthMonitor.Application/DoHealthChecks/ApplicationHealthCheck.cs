@@ -4,7 +4,7 @@ using System.Linq;
 using HealthMonitor.Domain;
 using HealthMonitor.Domain.Results;
 
-namespace HealthMonitor.Application
+namespace HealthMonitor.Application.DoHealthChecks
 {
     public abstract class ApplicationHealthCheck
     {

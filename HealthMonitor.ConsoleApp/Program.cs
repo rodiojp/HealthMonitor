@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HealthMonitor.Application;
 using HealthMonitor.Domain;
 using HealthMonitor.Domain.Configuration;
 using HealthMonitor.Domain.Results;
@@ -14,6 +13,8 @@ using log4net.Config;
 using log4net.Repository.Hierarchy;
 using log4net.Appender;
 using System.IO;
+using HealthMonitor.Application.DoHealthChecks;
+using HealthMonitor.Application.Common;
 
 namespace HealthMonitor.ConsoleApp
 {
@@ -50,17 +51,14 @@ namespace HealthMonitor.ConsoleApp
             else
             {
                 string healthCheckName = args[0];
-
-                InitializeLogging();
                 Log.DebugFormat($"Run The Health Check: \"{args[0]}\"");
-
                 try
                 {
                     HealthChecksSection config = HealthChecksSection.GetConfig();
                     IEnumerable<BoundsLimit> bounds = config.HealthChecks[healthCheckName].HealthCheckParameters.ReturnAll()
                                                             .Select(boundsLimit =>
                                                                 new BoundsLimit(boundsLimit.Name, boundsLimit.Type, boundsLimit.Value));
-                    IKernel kernel = CreateAndBindKernel();
+                    IKernel kernel = new BindKernelwithHealthChecks(new StandardKernel(new ServiceModule()), HealthChecksSection.HealthChecks).Bind();
                     ApplicationHealthCheck app = kernel.Get<ApplicationHealthCheck>(healthCheckName);
                     if (app == null)
                     {
@@ -83,95 +81,6 @@ namespace HealthMonitor.ConsoleApp
                 finally
                 {
                     Log.DebugFormat($"Finished health check: {healthCheckName}");
-                }
-            }
-
-        }
-
-        /// <summary>
-        /// Creates the Ninject Kernel and binds any short for name to an object
-        /// </summary>
-        /// <returns>An implementation of <see cref="IKernel"/> object</returns>
-        private static StandardKernel CreateAndBindKernel()
-        {
-            StandardKernel kernel = new StandardKernel(new ServiceModule());
-            foreach (object key in HealthChecksSection.HealthChecks)
-            {
-                var healthCheck = key as HealthCheck;
-                switch (healthCheck.Type)
-                {
-                   case "StopStartWindowsServices":
-                        kernel.Bind<ApplicationHealthCheck>().To<StopStartWindowsServices>().Named(healthCheck.Name);
-                        Log.DebugFormat($"Added the Health Check: \"{healthCheck.Name}\" \"{healthCheck.Type}\"");
-                        break;
-                }
-            }
-
-            // any implementation where you don't want to use the full assembly can go here
-            return kernel;
-        }
-
-        private static void InitializeLogging()
-        {
-            //Read the configuration
-            //XmlConfigurator.Configure();
-            Hierarchy hierarchy = (Hierarchy)LogManager.GetRepository();
-            CleanupLogs(hierarchy);
-        }
-
-        /// <summary>
-        /// Log4Net does not support rolling files maximum by date. This method does the cleanup.
-        /// </summary>
-        /// <param name="hierarchy"></param>
-        private static void CleanupLogs(Hierarchy hierarchy)
-        {
-            if (hierarchy == null)
-            {
-                return;
-            }
-            var st = hierarchy.Root.GetAppender(RollingFileAppenderNames[0]);// ("RollingFile");
-            RollingFileAppenderNames
-                .Select(name => hierarchy.Root.GetAppender(name)).OfType<RollingFileAppender>()
-                .ToList()
-                .ForEach(CleanLogs);
-        }
-
-        /// <summary>
-        /// Deletes any log that older than the number of 
-        /// maxSizeRollingBackups element in the web.config
-        /// </summary>
-        /// <param name="appender"></param>
-        private static void CleanLogs(RollingFileAppender appender)
-        {
-            string dir = Path.GetDirectoryName(appender.File);
-            if (dir == null)
-            {
-                return;
-            }
-            DirectoryInfo directoryInfo = new DirectoryInfo(dir);
-            if (!directoryInfo.Exists)
-                return;
-            FileInfo[] fileInfos = directoryInfo.GetFiles("HealthMonitor-log*.txt");
-            if (fileInfos.Length == 0)
-            {
-                return;
-
-            }
-            DateTime maxDate = DateTime.Now.AddDays(-appender.MaxSizeRollBackups);
-            //start looking for all file logs older than MaxSizeRollBackups days old
-            //and start deleting them
-            foreach (FileInfo info in fileInfos.Where(info => info.LastWriteTime < maxDate))
-            {
-                try
-                {
-                    info.Delete();
-                }
-                catch (Exception ex)
-                {
-                    if (Log != null)
-                    {
-                        Log.Error($"Failed to delete log file: {info.Name}. Exception:{ex.Message}");
-                    }
                 }
             }
         }
