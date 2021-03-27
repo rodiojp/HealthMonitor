@@ -103,11 +103,11 @@ namespace HealthMonitor.Application.DoHealthChecks
                 {
                     Result.MessageBuilder.Append($"Try to delete: {info.FullName}");
                     info.Delete();
-                    Result.MessageBuilder.AppendNewLine(" - success");
+                    Result.MessageBuilder.AppendNewLine(" - deleted");
                 }
                 catch (Exception ex)
                 {
-                    Result.MessageBuilder.AppendNewLine(" - failed");
+                    Result.MessageBuilder.AppendNewLine(" - failed to delete");
                     Log.Error($"Failed to delete log file: {info.Name}. Exception:{ex.Message}");
                 }
             }

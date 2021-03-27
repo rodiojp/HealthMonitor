@@ -10,7 +10,6 @@ using HealthMonitor.Services.Interfaces;
 using HealthMonitor.WindowsServices.Interfaces;
 using log4net;
 using Ninject;
-using Ninject.Extensions.NamedScope;
 
 namespace HealthMonitor.Application.Common
 {
