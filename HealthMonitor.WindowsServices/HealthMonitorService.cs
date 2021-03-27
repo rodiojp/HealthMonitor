@@ -13,6 +13,7 @@ using HealthMonitor.Application.DoHealthChecks;
 using HealthMonitor.Domain;
 using HealthMonitor.Domain.Configuration;
 using HealthMonitor.Domain.Configuration.Interfaces;
+using HealthMonitor.Domain.Extensions;
 using HealthMonitor.Domain.Results;
 using HealthMonitor.Services;
 using HealthMonitor.WindowsServices.Common;
@@ -34,7 +35,6 @@ namespace HealthMonitor.WindowsServices
 
         private readonly IList<IHealthCheck> healthChecks;
         private HealthCheckList healthCheckList;
-        private IKernel kernel;
         private static readonly HealthChecksSection HealthChecksSection = HealthChecksSection.GetConfig();
 
         public HealthMonitorService()
@@ -100,8 +100,8 @@ namespace HealthMonitor.WindowsServices
                 var args = e as HealthCheckErrorArgs;
                 if (args == null)
                     throw new InvalidCastException("Cannot determin health check result");
-                SendEmailMessage(args.HealthCheckName, "Error Found in Health Check Service",
-                () => string.Concat(args.HealthCheckException.Message,Environment.NewLine, args.HealthCheckException.StackTrace));
+                SendEmailMessage(args.HealthCheckName, "Error Found in Health Check Service:",
+                () => args.HealthCheckException.ToLogString());
             }
             catch (Exception ex)
             {

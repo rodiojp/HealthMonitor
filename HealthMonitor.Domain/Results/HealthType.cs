@@ -19,6 +19,7 @@ namespace HealthMonitor.Domain.Results
         Treshhold,
         Information,
         WindowsService,
+        SpaceOptimization,
         Files
     }
 }

@@ -9,7 +9,7 @@ namespace HealthMonitor.Application.DoHealthChecks
     public abstract class ApplicationHealthCheck
     {
         public string Name { get; protected set; }
-        public HealthType HealthType { get; protected set; }
+        public HealthType HealthType { get; internal set; }
         public virtual HealthMonitorResult DoHealthCheck(IEnumerable<BoundsLimit> healthCheckParameters)
         {
             return null;

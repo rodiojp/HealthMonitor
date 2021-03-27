@@ -5,8 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using HealthMonitor.Application.DoHealthChecks;
 using HealthMonitor.Domain.Configuration;
+using HealthMonitor.Services.Common;
+using HealthMonitor.Services.Interfaces;
+using HealthMonitor.WindowsServices.Interfaces;
 using log4net;
 using Ninject;
+using Ninject.Extensions.NamedScope;
 
 namespace HealthMonitor.Application.Common
 {
@@ -43,6 +47,11 @@ namespace HealthMonitor.Application.Common
                         break;
                     case "RollingFileDateLog":
                         Kernel.Bind<ApplicationHealthCheck>().To<RollingFileDateLog>().Named(healthCheck.Name);
+                        break;
+                    case "SpaceOpimizationCheck":
+                        Kernel.Bind<ApplicationHealthCheck>().To<SpaceOpimizationCheck>().Named(healthCheck.Name)
+                            .WithConstructorArgument("archiveService", new ArchivingService())
+                            .WithConstructorArgument("spaceSavingsService", new SpaceOptimizationService());
                         break;
                 }
                 Log.DebugFormat($"Added the Health Check: \"{healthCheck.Name}\" as \"{healthCheck.Type}\"");

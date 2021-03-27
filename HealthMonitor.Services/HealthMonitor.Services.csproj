@@ -40,6 +40,8 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -49,7 +51,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\ArchivingService.cs" />
     <Compile Include="Common\CurrentClock.cs" />
+    <Compile Include="Common\SpaceOptimizationService.cs" />
+    <Compile Include="Interfaces\IArchiveService.cs" />
+    <Compile Include="Interfaces\ISpaceOptimizationService.cs" />
     <Compile Include="ServiceModule.cs" />
     <Compile Include="Interfaces\IClock.cs" />
     <Compile Include="Interfaces\IScheduleProvider.cs" />

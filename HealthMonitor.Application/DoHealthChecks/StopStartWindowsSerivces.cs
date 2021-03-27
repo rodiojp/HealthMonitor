@@ -62,22 +62,21 @@ namespace HealthMonitor.Application.DoHealthChecks
         public HealthMonitorResult StopServices(ServiceController[] services)
         {
             HealthMonitorResult result = new HealthMonitorResult(Name, HealthType, ResultStatus.Information);
-            result.MessageBuilder.Append($"Stop windows services count: {services.Length}")
-                                 .Append(Environment.NewLine);
+            result.MessageBuilder.AppendNewLine($"Stop windows services count: {services.Length}");
             foreach (ServiceController service in services)
             {
                 try
                 {
-                    result.MessageBuilder.Append($"Stopping the windows service: {service.DisplayName}").Append(Environment.NewLine);
+                    result.MessageBuilder.AppendNewLine($"Stopping the windows service: {service.DisplayName}");
                     service.Stop();
                     //give a few seconds
                     service.WaitForStatus(ServiceControllerStatus.Stopped, ServiceTimeout);
-                    result.MessageBuilder.Append($"Windows service: {service.DisplayName} - has been stopped").Append(Environment.NewLine);
+                    result.MessageBuilder.AppendNewLine($"Windows service: {service.DisplayName} - has been stopped");
                 }
                 catch (Exception e)
                 {
                     result.Status = ResultStatus.Error;
-                    result.MessageBuilder.Append(e.ToLogString());
+                    result.MessageBuilder.AppendNewLine(e.ToLogString());
                     return result;
                 }
             }
@@ -86,17 +85,16 @@ namespace HealthMonitor.Application.DoHealthChecks
         public HealthMonitorResult StartServices(ServiceController[] services)
         {
             HealthMonitorResult result = new HealthMonitorResult(Name, HealthType, ResultStatus.Information);
-            result.MessageBuilder.Append($"Start windows services count: {services.Length}")
-                                 .Append(Environment.NewLine);
+            result.MessageBuilder.AppendNewLine($"Start windows services count: {services.Length}");
             foreach (ServiceController service in services)
             {
                 try
                 {
-                    result.MessageBuilder.Append($"Starting the windows service: {service.DisplayName}").Append(Environment.NewLine);
+                    result.MessageBuilder.AppendNewLine($"Starting the windows service: {service.DisplayName}");
                     service.Start();
                     //give a few seconds
                     service.WaitForStatus(ServiceControllerStatus.Running, ServiceTimeout);
-                    result.MessageBuilder.Append($"Windows service: {service.DisplayName} - has been started").Append(Environment.NewLine);
+                    result.MessageBuilder.AppendNewLine($"Windows service: {service.DisplayName} - has been started");
                 }
                 catch (Exception e)
                 {

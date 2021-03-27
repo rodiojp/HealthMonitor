@@ -11,5 +11,8 @@ namespace HealthMonitor.Domain
         // Error list
         public const string MISSING_HEALTH_CHECK_PARAMETER = "Missing {0} parameter for {1}";
         public const string MISSING_HEALTH_CHECK_SECTION = "HealthChecksSection is not defined";
+        // Messages
+        public const string TOTAL_FILE_SIZE_MSG = "Total Space Saved {0}";
+
     }
 }

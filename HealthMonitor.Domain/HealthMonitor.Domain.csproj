@@ -48,8 +48,15 @@
   <ItemGroup>
     <Compile Include="BoundsLimit.cs" />
     <Compile Include="Configuration\HealthChecksSection.cs" />
+    <Compile Include="Extensions\DirecotoryExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
+    <Compile Include="Extensions\FileSizeUtils.cs" />
+    <Compile Include="Extensions\StringBuilderExtensions.cs" />
     <Compile Include="Results\TresholdResultType.cs" />
+    <Compile Include="SpaceOptimization\Dtos\ArchiveDto.cs" />
+    <Compile Include="SpaceOptimization\FileOptimized.cs" />
+    <Compile Include="SpaceOptimization\SpaceOptimizationSummary.cs" />
+    <Compile Include="SpaceOptimization\SpaceSavedAction.cs" />
     <Compile Include="SystemConstants.cs" />
     <Compile Include="Treshold.cs" />
     <Compile Include="Results\HealthType.cs" />
