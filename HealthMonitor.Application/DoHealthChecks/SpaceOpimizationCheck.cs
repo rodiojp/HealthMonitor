@@ -18,12 +18,12 @@ using HealthMonitor.Domain.SpaceOptimization.Dtos;
 namespace HealthMonitor.Application.DoHealthChecks
 {
     /// <summary>
-    /// Spaca Optimization - currently will delete any file that was lastmodified over x days
+    /// Space Optimization - currently will delete any file that was lastmodified over x days
     /// and archive anything over x bytes
     /// </summary>
     /// <remarks>
     /// Class: SpaceOpimizationCheck.cs
-    /// Note: This could be refactored and improved upon. Haev the archiveDto and fileInfo
+    /// Note: This could be refactored and improved upon. Have the ArchiveDto and FileInfo
     /// new classes reuquired, implenent some interface and instead of having two methods,
     /// one from the files and one for the archive, do both.
     /// </remarks>
@@ -99,8 +99,8 @@ namespace HealthMonitor.Application.DoHealthChecks
                                                                                     new List<FileOptimized>(),
                                                                                     path,
                                                                                     directory.GetCurrentSizeExceptFiles(".zip"));
-                    result.MessageBuilder.AppendNewLine(DeleteOldArchivedFiles(daysOld, summary));
-                    result.MessageBuilder.AppendNewLine(DeleteOldArchiveFiles(path, summary));
+                    result.MessageBuilder.AppendNewLine(DeleteOldArchivedFiles(summary, daysOld));
+                    result.MessageBuilder.AppendNewLine(DeleteOldArchivedFiles(summary, path));
                     summary.CurrentSize = directory.GetCurrentSizeExceptFiles(".zip");
                     result.MessageBuilder.AppendNewLine(summary.ToString());
                     optimizations.Add(summary);
@@ -121,15 +121,15 @@ namespace HealthMonitor.Application.DoHealthChecks
         /// <summary>
         /// Deletes or adds to the SpaceSaved.zip files
         /// </summary>
-        /// <param name="path">Actual directory</param>
         /// <param name="summary">A <see cref="SpaceOptimizationSummary"/> object of record transaction for directory</param>
+        /// <param name="path">Actual directory</param>
         /// <returns>A string of any failed files that need to be archived of deleted</returns>
-        private string DeleteOldArchiveFiles(string path, SpaceOptimizationSummary summary)
+        private string DeleteOldArchivedFiles(SpaceOptimizationSummary summary, string path)
         {
             StringBuilder sb = new StringBuilder();
             //go through all the files and try to delete them from zip one
             //at a time
-            foreach (FileInfo item in GetAllArchivedFilesThatNeedToBeArchivedOrDeleted(path))
+            foreach (FileInfo item in GetAllFilesThatNeedToBeArchivedOrDeleted(path))
             {
                 try
                 {
@@ -170,7 +170,7 @@ namespace HealthMonitor.Application.DoHealthChecks
         /// </summary>
         /// <param name="path">Actual directory</param>
         /// <returns></returns>
-        private IEnumerable<FileInfo> GetAllArchivedFilesThatNeedToBeArchivedOrDeleted(string path)
+        private IEnumerable<FileInfo> GetAllFilesThatNeedToBeArchivedOrDeleted(string path)
         {
             DirectoryInfo directory = new DirectoryInfo(path);
             return directory.GetFilesExceptFiles(".zip")
@@ -182,10 +182,10 @@ namespace HealthMonitor.Application.DoHealthChecks
         /// <summary>
         /// Deletes or adds to the SpaceSaved.zip file
         /// </summary>
-        /// <param name="daysOld">Number of days before deleting from zip</param>
         /// <param name="summary">A <see cref="SpaceOptimizationSummary"/> object of record transaction for directory</param>
+        /// <param name="daysOld">Number of days before deleting from zip</param>
         /// <returns>A string of any failed files that need to be archived of deleted</returns>
-        private string DeleteOldArchivedFiles(int daysOld, SpaceOptimizationSummary summary)
+        private string DeleteOldArchivedFiles(SpaceOptimizationSummary summary, int daysOld)
         {
             StringBuilder sb = new StringBuilder();
             //go through all the files and try to delete them from zip one
