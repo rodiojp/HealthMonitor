@@ -12,7 +12,7 @@ namespace HealthMonitor.Domain.Results
     /// <remarks>
     /// Enum: TresholdResultType
     /// </remarks>
-    public enum TresholdResultType
+    public enum ThresholdResultType
     {
         WithinRange,
         OverMaximum,

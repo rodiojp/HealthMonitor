@@ -16,7 +16,7 @@ namespace HealthMonitor.Domain.Results
     {
         Database,
         Paramters,
-        Treshhold,
+        Threshold,
         Information,
         WindowsService,
         SpaceOptimization,

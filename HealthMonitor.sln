@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthMonitor.Application",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthMonitor.WindowsServices", "HealthMonitor.WindowsServices\HealthMonitor.WindowsServices.csproj", "{28BD2A40-04A1-44DD-B2CF-31E26BC5BD46}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthMonitor.Tests", "HealthMonitor.Tests\HealthMonitor.Tests.csproj", "{F3C4F15F-EFD7-4F0F-A61D-3AC0F0E4AB0A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{28BD2A40-04A1-44DD-B2CF-31E26BC5BD46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28BD2A40-04A1-44DD-B2CF-31E26BC5BD46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28BD2A40-04A1-44DD-B2CF-31E26BC5BD46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3C4F15F-EFD7-4F0F-A61D-3AC0F0E4AB0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3C4F15F-EFD7-4F0F-A61D-3AC0F0E4AB0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3C4F15F-EFD7-4F0F-A61D-3AC0F0E4AB0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3C4F15F-EFD7-4F0F-A61D-3AC0F0E4AB0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

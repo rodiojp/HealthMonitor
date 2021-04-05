@@ -11,8 +11,8 @@ namespace HealthMonitor.Services.Common
 {
     public class SpaceOptimizationService : ISpaceOptimizationService
     {
-        private Treshold<DateTime> fileHoldLimit;
-        private Treshold<long> fileSizeLimit;
+        private Threshold<DateTime> fileHoldLimit;
+        private Threshold<long> fileSizeLimit;
 
         public SpaceOptimizationService(int maxDays, long maxSize)
         {
@@ -32,11 +32,11 @@ namespace HealthMonitor.Services.Common
         /// <summary>
         /// Set the maximum days before file needs to be deleted
         /// </summary>
-        public int MaxDays { set => fileHoldLimit = new Treshold<DateTime>(DateTime.Now.AddDays(-value), DateTime.Now); }
+        public int MaxDays { set => fileHoldLimit = new Threshold<DateTime>(DateTime.Now.AddDays(-value), DateTime.Now); }
         /// <summary>
         /// Set the maximum size before the file needs to be archived
         /// </summary>
-        public long MaxSize { set => fileSizeLimit = new Treshold<long>(0, value); }
+        public long MaxSize { set => fileSizeLimit = new Threshold<long>(0, value); }
         /// <summary>
         /// Determin what action, if any, needs to be done for space optimization
         /// </summary>

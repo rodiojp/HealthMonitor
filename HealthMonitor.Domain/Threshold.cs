@@ -10,7 +10,7 @@ namespace HealthMonitor.Domain
     /// <summary>
     /// Class to hold a range of values
     /// </summary>
-    public class Treshold<T> where T : struct, IComparable
+    public class Threshold<T> where T : struct, IComparable
     {
         public T Min { get; }
 
@@ -20,7 +20,7 @@ namespace HealthMonitor.Domain
         /// </summary>
         /// <param name="min"></param>
         /// <param name="max"></param>
-        public Treshold(T min, T max)
+        public Threshold(T min, T max)
         {
             if (min.CompareTo(max) > 0)
                 throw new ArgumentOutOfRangeException($"{min} must be less than {max}");
@@ -39,13 +39,13 @@ namespace HealthMonitor.Domain
             return other.CompareTo(Max) > 0 || other.CompareTo(Min) < 0;
         }
 
-        public TresholdResultType CheckWithinBounds(T other)
+        public ThresholdResultType CheckWithinBounds(T other)
         {
             if (other.CompareTo(Max) > 0)
-                return TresholdResultType.OverMaximum;
+                return ThresholdResultType.OverMaximum;
             return other.CompareTo(Min) < 0
-                ? TresholdResultType.UnderMinimum
-                : TresholdResultType.WithinRange;
+                ? ThresholdResultType.UnderMinimum
+                : ThresholdResultType.WithinRange;
 
         }
     }
