@@ -47,12 +47,12 @@ namespace HealthMonitor.Services.Scheduling
         /// <summary>
         /// Next time to trigger event in Milliseconds
         /// </summary>
-        public virtual double GetInterval => (NextRunTime - DateTime.Now).TotalMilliseconds;
+        public virtual double GetInterval => (NextRunTime - EvalDate).TotalMilliseconds;
 
         /// <summary>
         /// Next time to trigger event
         /// </summary>
-        public virtual DateTime NextRunTime => DateTime.Today.AddDays(1);
+        public virtual DateTime NextRunTime => EvalDate.Date.AddDays(1);
 
         public void Reset()
         {
