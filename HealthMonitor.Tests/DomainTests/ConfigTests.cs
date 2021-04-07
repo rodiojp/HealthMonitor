@@ -91,9 +91,9 @@ namespace HealthMonitor.Tests.DomainTests
             var stopStartWindowsServices = healthChecks.First(x => x.Name.Equals("stop-start-windows-services"));
             //Accert
             Assert.IsNotNull(stopStartWindowsServices);
-            Assert.AreEqual("00:05", stopStartWindowsServices.ScheduleParams.TimeParameters.First());
-            Assert.AreEqual("May 1, 2020", stopStartWindowsServices.ScheduleParams.StartTime);
-            Assert.AreEqual("Interval", stopStartWindowsServices.ScheduleParams.Frequency);
+            Assert.AreEqual("Monday", stopStartWindowsServices.ScheduleParams.TimeParameters.First());
+            Assert.AreEqual("Apr 6, 2021 9:40 AM", stopStartWindowsServices.ScheduleParams.StartTime);
+            Assert.AreEqual("Weekly", stopStartWindowsServices.ScheduleParams.Frequency);
         }
         /// <summary>
         /// class HealthChecks returns all properties correctly
@@ -106,10 +106,10 @@ namespace HealthMonitor.Tests.DomainTests
             Assert.AreEqual("Email", stopStartWindowsServices.AlertType);
             Assert.AreEqual("example@gmail.com", stopStartWindowsServices.To);
             Assert.AreEqual("example@gmail.com", stopStartWindowsServices.From);
-            Assert.AreEqual("Interval", stopStartWindowsServices.Schedule.Frequency);
-            Assert.AreEqual("May 1, 2020", stopStartWindowsServices.Schedule.StartTime);
+            Assert.AreEqual("Weekly", stopStartWindowsServices.Schedule.Frequency);
+            Assert.AreEqual("Apr 6, 2021 9:40 AM", stopStartWindowsServices.Schedule.StartTime);
             Assert.AreEqual(1, stopStartWindowsServices.Schedule.TimeParameters.Count());
-            Assert.AreEqual("00:05", stopStartWindowsServices.Schedule.TimeParameters.First());
+            Assert.AreEqual("Monday", stopStartWindowsServices.Schedule.TimeParameters.First());
             Assert.AreEqual(1, stopStartWindowsServices.HealthCheckParameters.Count);
             Assert.AreEqual("AdobeARMservice", stopStartWindowsServices.HealthCheckParameters["AdobeARMservice"].Name);
         }

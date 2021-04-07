@@ -15,12 +15,12 @@ namespace HealthMonitor.Services.Scheduling
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="interval">The <see cref="FrequencyInterval"/> enumerated type</param>
         /// <param name="startDate">The first instance to start from</param>
         /// <param name="evalDate">The Now Date -- added so can mock up tests</param>
         /// <param name="times">The <see cref="TimeSpan"/> list of times to trigger a next run</param>
-        public HourlyScheduleProvider(FrequencyInterval interval, DateTime startDate, IClock evalDate, IEnumerable<TimeSpan> times) : base(interval, startDate, evalDate)
+        public HourlyScheduleProvider(DateTime startDate, IClock evalDate, IEnumerable<TimeSpan> times) : base(startDate, evalDate)
         {
+            IntervalType = FrequencyInterval.Hourly;
             runTimes = times.OrderBy(x => x).ToList();
         }
 

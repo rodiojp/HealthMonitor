@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using HealthMonitor.Domain.Scheduling;
 using HealthMonitor.Services.Interfaces;
 using HealthMonitor.Services.Scheduling;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HealthMonitor.Tests.SchedulingTests
+namespace HealthMonitor.Tests.ServicesTests.SchedulingTests
 {
     /// <summary>
     /// HelperScheduleProviderTests tests and common methods for derived tests

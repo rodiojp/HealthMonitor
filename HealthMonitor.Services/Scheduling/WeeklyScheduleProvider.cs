@@ -10,6 +10,11 @@ namespace HealthMonitor.Services.Scheduling
 {
     /// <summary>
     /// Calculates the week day run
+    /// <Schedule Frequency="Weekly" StartTime="Apr 6, 2021 9:40 AM">
+    ///    <RunTimes>
+    ///       <RunTime Value="Monday"></RunTime>
+    ///    </RunTimes>
+    /// </Schedule>
     /// </summary>
     /// <remarks>
     /// Class: WeeklyScheduleProvider.cs
@@ -31,13 +36,13 @@ namespace HealthMonitor.Services.Scheduling
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="interval">The <see cref="FrequencyInterval"/> enumerated type</param>
         /// <param name="startDate">The first instance to start from</param>
         /// <param name="evalDate">The Now Date -- added so can mock up tests</param>
         /// <param name="days">The list of the <see cref="DayOfWeek"/> enumerated type of days we want to return 
         /// a next run time to calculate on</param>
-        public WeeklyScheduleProvider(FrequencyInterval interval, DateTime startDate, IClock evalDate, IEnumerable<DayOfWeek> days) : base(interval, startDate, evalDate)
+        public WeeklyScheduleProvider(DateTime startDate, IClock evalDate, IEnumerable<DayOfWeek> days) : base(startDate, evalDate)
         {
+            IntervalType = FrequencyInterval.Weekly;
             daysOfWeek = days.OrderBy(x => x).ToList();
         }
 
@@ -61,7 +66,7 @@ namespace HealthMonitor.Services.Scheduling
 
                 while (true)
                 {
-                    if (daysOfWeek.Any(daysOfWeek => current.DayOfWeek == daysOfWeek && current.TimeOfDay <= EvalDate.TimeOfDay))
+                    if (daysOfWeek.Any(daysOfWeek => current.DayOfWeek == daysOfWeek) && current > EvalDate)
                     {
                         return current;
                     }

@@ -8,6 +8,13 @@ using HealthMonitor.Services.Interfaces;
 
 namespace HealthMonitor.Services.Scheduling
 {
+    /// <summary>
+    /// <Schedule Frequency="Monthly" StartTime="Apr 6, 2021 9:40 AM">
+    ///    <RunTimes>
+    ///       <RunTime Value="1"></RunTime>
+    ///    </RunTimes>
+    /// </Schedule>
+    /// </summary>
     public class MonthlyScheduleProvider : BaseScheduleProvider
     {
         private readonly IList<int> days;
@@ -15,12 +22,12 @@ namespace HealthMonitor.Services.Scheduling
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="interval">The <see cref="FrequencyInterval"/> enumerated type</param>
         /// <param name="startDate">The first instance to start from</param>
         /// <param name="evalDate">The Now Date -- added so can mock up tests</param>
         /// <param name="days">The list of days in a month that should be provided a date from</param>
-        public MonthlyScheduleProvider(FrequencyInterval interval, DateTime startDate, IClock evalDate, IEnumerable<int> days) : base(interval, startDate, evalDate)
+        public MonthlyScheduleProvider(DateTime startDate, IClock evalDate, IEnumerable<int> days) : base(startDate, evalDate)
         {
+            IntervalType = FrequencyInterval.Monthly;
             this.days = days.OrderBy(x => x).ToList();
         }
 
@@ -49,7 +56,7 @@ namespace HealthMonitor.Services.Scheduling
                         //watch out for scenarios where there's less days in a month than 
                         //the specified day. For example February has 28/29 days and
                         //if 30th day is specified
-                        if (DateTime.DaysInMonth(current.Year, current.Month) <= day)
+                        if (day <= DateTime.DaysInMonth(current.Year, current.Month))
                         {
                             //Note how we substruct (day -1). The reason we do that is that we start with the 1st
                             //if we added a day scheduled on the 15th, adding 15 will put the date at 16 and hence

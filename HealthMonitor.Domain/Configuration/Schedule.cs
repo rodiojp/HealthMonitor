@@ -8,6 +8,14 @@ using HealthMonitor.Domain.Configuration.Interfaces;
 
 namespace HealthMonitor.Domain.Configuration
 {
+
+    /// <summary>
+    ///    <Schedule Frequency="Interval" StartTime="Apr 6, 2021 9:40 AM">
+    ///       <RunTimes>
+    ///          <RunTime Value="00:15:05"></RunTime>
+    ///       </RunTimes>
+    ///    </Schedule>
+    /// </summary>
     public class Schedule : ConfigurationElement, IScheduleParameters
     {
         [ConfigurationProperty("Frequency", IsRequired = true)]

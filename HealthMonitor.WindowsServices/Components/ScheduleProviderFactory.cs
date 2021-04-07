@@ -56,7 +56,7 @@ namespace HealthMonitor.WindowsServices.Components
         {
             var startTime = DateTime.Parse(schedule.StartTime);
             var daysOfWeek = schedule.TimeParameters.Select(x=>(DayOfWeek)Enum.Parse(typeof(DayOfWeek), x));
-            return new WeeklyScheduleProvider(FrequencyInterval.Weekly, startTime, new CurrentClock(), daysOfWeek);
+            return new WeeklyScheduleProvider(startTime, new CurrentClock(), daysOfWeek);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace HealthMonitor.WindowsServices.Components
         {
             var startTime = DateTime.Parse(schedule.StartTime);
             var interval = TimeSpan.Parse(schedule.TimeParameters.First());
-            return new IntervalScheduleProvider(FrequencyInterval.Interval, startTime, new CurrentClock(), interval);
+            return new IntervalScheduleProvider(startTime, new CurrentClock(), interval);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace HealthMonitor.WindowsServices.Components
         {
             var startTime = DateTime.Parse(schedule.StartTime);
             var timesToRun = schedule.TimeParameters.Select(TimeSpan.Parse);
-            return new HourlyScheduleProvider(FrequencyInterval.Hourly, startTime, new CurrentClock(), timesToRun);
+            return new HourlyScheduleProvider(startTime, new CurrentClock(), timesToRun);
         }
         /// <summary>
         /// Builds a DailyScheduleProvider
@@ -89,7 +89,7 @@ namespace HealthMonitor.WindowsServices.Components
         /// <returns>An instantiated <see cref="DailyScheduleProvider"/> object</returns>
         private static IScheduleProvider BuildDailyScheduleProvider(IScheduleParameters schedule)
         {
-            return new DailyScheduleProvider(FrequencyInterval.Daily, DateTime.Parse(schedule.StartTime), new CurrentClock());
+            return new DailyScheduleProvider(DateTime.Parse(schedule.StartTime), new CurrentClock());
         }
         /// <summary>
         /// Builds a MonthlyScheduleProvider
@@ -100,7 +100,7 @@ namespace HealthMonitor.WindowsServices.Components
         {
             var startTime = DateTime.Parse(schedule.StartTime);
             var daysToRun = schedule.TimeParameters.Select(int.Parse);
-            return new MonthlyScheduleProvider(FrequencyInterval.Monthly, startTime, new CurrentClock(), daysToRun);
+            return new MonthlyScheduleProvider(startTime, new CurrentClock(), daysToRun);
         }
     }
 }

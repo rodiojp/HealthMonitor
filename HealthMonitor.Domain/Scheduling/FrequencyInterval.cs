@@ -8,6 +8,7 @@ namespace HealthMonitor.Domain.Scheduling
 {
     public enum FrequencyInterval
     {
+        Base,
         Monthly,
         Weekly,
         Daily,

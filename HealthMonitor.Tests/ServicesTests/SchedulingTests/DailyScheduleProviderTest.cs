@@ -3,23 +3,37 @@ using HealthMonitor.Domain.Scheduling;
 using HealthMonitor.Services.Scheduling;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HealthMonitor.Tests.SchedulingTests
+namespace HealthMonitor.Tests.ServicesTests.SchedulingTests
 {
     [TestClass]
     public class DailyScheduleProviderTest : HelperScheduleProviderTests
     {
+        [TestMethod]
+        public void DailyScheduleProvider_IntervalType_Is_FrequencyInterval_Daily()
+        {
+            //setup
+            var aDateTimeNow = DateTime.Now;
+            var startDate = aDateTimeNow;
+            var evalDate = BuildClock(aDateTimeNow);
+            var scheduleProvider = new DailyScheduleProvider(startDate, evalDate);
+            //Assert
+            Assert.IsTrue(scheduleProvider.IntervalType == FrequencyInterval.Daily);
+        }
         /// <summary>
         /// class DailyScheduleProvider get NextRunTime if StartDate in future
         /// </summary>
         [TestMethod]
         public void DailyScheduleProvider_StartDate_Tomorrow_ExpectedResult_NextRunTime_Tomorrow()
         {
+            //       start & Expected
+            //   Now    Now+1Day  
+            //____o________o_________
             //setup
             var aDateTimeNow = DateTime.Now;
             var startDate = aDateTimeNow.AddDays(1);
             var expectedResult = aDateTimeNow.AddDays(1);
             var evalDate = BuildClock(aDateTimeNow);
-            var scheduleProvider = new DailyScheduleProvider(FrequencyInterval.Monthly, startDate, evalDate);
+            var scheduleProvider = new DailyScheduleProvider(startDate, evalDate);
             //Assert
             RunTest(expectedResult, scheduleProvider);
         }
@@ -36,12 +50,12 @@ namespace HealthMonitor.Tests.SchedulingTests
             var startDate = aDateTimeNow.AddDays(-1);
             var expectedResult = aDateTimeNow.AddDays(1);
             var evalDate = BuildClock(aDateTimeNow);
-            var scheduleProvider = new DailyScheduleProvider(FrequencyInterval.Monthly, startDate, evalDate);
+            var scheduleProvider = new DailyScheduleProvider(startDate, evalDate);
             //Assert
             RunTest(expectedResult, scheduleProvider);
         }
         /// <summary>
-        /// class DailyScheduleProvider get NextRunTime if StartDate in the past (uses Nest as NextRunDate)
+        /// class DailyScheduleProvider get NextRunTime if StartDate in the past
         /// </summary>
         [TestMethod]
         public void DailyScheduleProvider_StartDate_23HoursAgo_NextRunTime_1HourAfterNow()
@@ -54,7 +68,7 @@ namespace HealthMonitor.Tests.SchedulingTests
             var startDate = aDateTimeNow.AddDays(-1).AddHours(1);
             var expectedResult = aDateTimeNow.AddHours(1);
             var evalDate = BuildClock(aDateTimeNow);
-            var scheduleProvider = new DailyScheduleProvider(FrequencyInterval.Monthly, startDate, evalDate);
+            var scheduleProvider = new DailyScheduleProvider(startDate, evalDate);
             //Assert
             RunTest(expectedResult, scheduleProvider);
         }
@@ -69,7 +83,7 @@ namespace HealthMonitor.Tests.SchedulingTests
             var startDate = aDateTimeNow.AddDays(-1).AddHours(-1);
             var expectedResult = aDateTimeNow.AddDays(1).AddHours(-1);
             var evalDate = BuildClock(aDateTimeNow);
-            var scheduleProvider = new DailyScheduleProvider(FrequencyInterval.Monthly, startDate, evalDate);
+            var scheduleProvider = new DailyScheduleProvider(startDate, evalDate);
             //Assert
             RunTest(expectedResult, scheduleProvider);
         }

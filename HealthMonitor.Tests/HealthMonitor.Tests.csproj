@@ -63,15 +63,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DomainTests\BoundsTests.cs" />
+    <Compile Include="WindowsServicesTests\ComponentsTests\ScheduleProviderFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DomainTests\ConfigTests.cs" />
-    <Compile Include="SchedulingTests\HelperScheduleProviderTests.cs" />
-    <Compile Include="SchedulingTests\BaseScheduleProviderTests.cs" />
-    <Compile Include="SchedulingTests\IntervalScheduleProviderTests.cs" />
-    <Compile Include="SchedulingTests\DailyScheduleProviderTest.cs" />
-    <Compile Include="SchedulingTests\HourlyScheduleProviderTest.cs" />
-    <Compile Include="SchedulingTests\MonthlyScheduleProviderTests.cs" />
-    <Compile Include="SchedulingTests\WeeklyScheduleProviderTests.cs" />
+    <Compile Include="ServicesTests\SchedulingTests\HelperScheduleProviderTests.cs" />
+    <Compile Include="ServicesTests\SchedulingTests\BaseScheduleProviderTests.cs" />
+    <Compile Include="ServicesTests\SchedulingTests\IntervalScheduleProviderTests.cs" />
+    <Compile Include="ServicesTests\SchedulingTests\DailyScheduleProviderTest.cs" />
+    <Compile Include="ServicesTests\SchedulingTests\HourlyScheduleProviderTest.cs" />
+    <Compile Include="ServicesTests\SchedulingTests\MonthlyScheduleProviderTests.cs" />
+    <Compile Include="ServicesTests\SchedulingTests\WeeklyScheduleProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -89,6 +90,10 @@
     <ProjectReference Include="..\HealthMonitor.Services\HealthMonitor.Services.csproj">
       <Project>{8de7c2fa-568e-4a07-b7bc-c9c2b8794abc}</Project>
       <Name>HealthMonitor.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HealthMonitor.WindowsServices\HealthMonitor.WindowsServices.csproj">
+      <Project>{28bd2a40-04a1-44dd-b2cf-31e26bc5bd46}</Project>
+      <Name>HealthMonitor.WindowsServices</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -8,6 +8,13 @@ using HealthMonitor.Services.Interfaces;
 
 namespace HealthMonitor.Services.Scheduling
 {
+    /// <summary>
+    /// <Schedule Frequency="Interval" StartTime="Apr 6, 2021 9:40 AM">
+    ///    <RunTimes>
+    ///       <RunTime Value="00:15:05"></RunTime>
+    ///    </RunTimes>
+    /// </Schedule>
+    /// </summary>
     public class IntervalScheduleProvider : BaseScheduleProvider
     {
         private readonly TimeSpan timeBetweenRunTimes;
@@ -15,12 +22,12 @@ namespace HealthMonitor.Services.Scheduling
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="interval">The <see cref="FrequencyInterval"/> enumerated type</param>
         /// <param name="startDate">The first instance to start from</param>
         /// <param name="evalDate">The Now Date -- added so can mock up tests</param>
         /// <param name="timeBetweenTrigger">The interval between run times</param>
-        public IntervalScheduleProvider(FrequencyInterval interval, DateTime startDate, IClock evalDate, TimeSpan timeBetweenTrigger) : base(interval, startDate, evalDate)
+        public IntervalScheduleProvider(DateTime startDate, IClock evalDate, TimeSpan timeBetweenTrigger) : base(startDate, evalDate)
         {
+            IntervalType = FrequencyInterval.Interval;
             timeBetweenRunTimes = timeBetweenTrigger;
         }
         /// <summary>

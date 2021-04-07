@@ -10,8 +10,10 @@ namespace HealthMonitor.Services.Scheduling
 {
     public class DailyScheduleProvider : BaseScheduleProvider
     {
-        public DailyScheduleProvider(FrequencyInterval interval, DateTime startDate, IClock evalDate) : base(interval, startDate, evalDate)
-        { }
+        public DailyScheduleProvider(DateTime startDate, IClock evalDate) : base(startDate, evalDate)
+        {
+            IntervalType = FrequencyInterval.Daily;
+        }
         /// <summary>
         /// Calculates the Daily Next Run Time
         /// </summary>

@@ -17,7 +17,6 @@ namespace HealthMonitor.Services.Scheduling
     /// </remarks>
     public class BaseScheduleProvider : IScheduleProvider
     {
-        protected readonly FrequencyInterval FrequencyInterval;
         protected readonly DateTime StartDate;
         /// <summary>
         /// This date will allways be DateTime.Now.
@@ -27,22 +26,21 @@ namespace HealthMonitor.Services.Scheduling
         protected DateTime EvalDate;
 
         /// <summary>
+        /// What kind of frequency interval
+        /// </summary>
+        public FrequencyInterval IntervalType { get; private protected set; }
+
+        /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="interval">interval type</param>
         /// <param name="startDate">The first scheduled date to start from</param>
         /// <param name="evalDate">Date of Now</param>
-        public BaseScheduleProvider(FrequencyInterval interval, DateTime startDate, IClock evalDate)
+        public BaseScheduleProvider(DateTime startDate, IClock evalDate)
         {
-            FrequencyInterval = interval;
+            IntervalType = FrequencyInterval.Base;
             StartDate = startDate;
             EvalDate = evalDate.Now;
         }
-
-        /// <summary>
-        /// What kind of frequency interval
-        /// </summary>
-        public FrequencyInterval IntervalType => FrequencyInterval;
 
         /// <summary>
         /// Next time to trigger event in Milliseconds
@@ -58,6 +56,5 @@ namespace HealthMonitor.Services.Scheduling
         {
             EvalDate = DateTime.Now;
         }
-
     }
 }
